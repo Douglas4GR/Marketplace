@@ -23,7 +23,7 @@ namespace Marketplace.Controllers
             if (product == null)
             {
                 _context.Products.Add(new Product { Sku = order.Sku, Name = order.ProductName, StockQuantity = 0 });
-                order.Status = "NotExists";
+                order.Status = "Não existe!";
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
                 return Ok(order);
@@ -32,11 +32,11 @@ namespace Marketplace.Controllers
             if (product.StockQuantity >= order.QuantityPurchased)
             {
                 product.StockQuantity -= order.QuantityPurchased;
-                order.Status = "Completed";
+                order.Status = "Completo!";
             }
             else
             {
-                order.Status = "AwaitingStock";
+                order.Status = "Aguardando estoque.";
             }
 
             _context.Orders.Add(order);
@@ -47,7 +47,7 @@ namespace Marketplace.Controllers
         [HttpGet("history")]
         public async Task<IActionResult> GetOrderHistory()
         {
-            var completedOrders = await _context.Orders.Where(o => o.Status == "Completed").ToListAsync();
+            var completedOrders = await _context.Orders.Where(o => o.Status == "Completo!").ToListAsync();
             return Ok(completedOrders);
         }
 
