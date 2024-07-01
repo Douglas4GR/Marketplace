@@ -23,7 +23,7 @@ namespace Marketplace.Controllers
             if (product == null)
             {
                 _context.Products.Add(new Product { Sku = order.Sku, Name = order.ProductName, StockQuantity = 0 });
-                order.Status = "Não existe!";
+                order.Status = "Incompleto!";
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
                 return Ok(order);
@@ -44,7 +44,7 @@ namespace Marketplace.Controllers
             return Ok(order);
         }
 
-        [HttpGet("history")]
+        [HttpGet("historico-concluidos")]
         public async Task<IActionResult> GetOrderHistory()
         {
             var completedOrders = await _context.Orders.Where(o => o.Status == "Completo!").ToListAsync();
@@ -63,6 +63,27 @@ namespace Marketplace.Controllers
             var status = new OrderStatus { OrderId = order.OrderId, Status = order.Status };
             return Ok(status);
         }
-    }
 
+        [HttpPost("processar-pedidos-pendentes")]
+        public async Task<IActionResult> ProcessPendingOrders()
+        {
+            var pendingOrders = await _context.Orders
+                .Where(o => o.Status != "Completo!")
+                .OrderBy(o => o.PurchaseDate)
+                .ToListAsync();
+
+            foreach (var order in pendingOrders)
+            {
+                var product = await _context.Products.FindAsync(order.Sku);
+                if (product != null && product.StockQuantity >= order.QuantityPurchased)
+                {
+                    product.StockQuantity -= order.QuantityPurchased;
+                    order.Status = "Completo!";
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+    }
 }
