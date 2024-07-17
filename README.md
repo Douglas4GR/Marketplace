@@ -12,9 +12,11 @@ Nesse caso específico a estrutura gira em torno de um sistema de gestão de ped
 
 ## Swagger
 
-![Operações](Imagens/Swagger1.png)
+![Operações](Marketplace/Imagens/metodos.png)
 
-![Esquemas](Imagens/Swagger2.png)
+![Esquemas1](Marketplace/Imagens/orderSchema.png)
+
+![Esquemas1](Marketplace/Imagens/productSchema.png)
 
 ### As operações atuais incluem:
   - Inserir pedido
@@ -36,6 +38,7 @@ Nesse caso específico a estrutura gira em torno de um sistema de gestão de ped
 │   │   └── ProductController.cs
 │   ├── Data
 │   │   └── MarketplaceContext.cs
+│   ├── Imagens
 │   ├── Models
 │   │   ├── Order.cs
 │   │   ├── OrderStatus.cs
@@ -50,7 +53,6 @@ Nesse caso específico a estrutura gira em torno de um sistema de gestão de ped
 │   └── exemplos.json
 ├── .gitattributes
 ├── .gitignore
-├── Imagens
 ├── LICENSE
 ├── Marketplace.sln
 └── README.md
